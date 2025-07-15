@@ -1,0 +1,43 @@
+1. Set Up Your Environment
+Make sure Python is installed. You can download it from: https://www.python.org/downloads
+
+✅ 2. Install Required Packages
+Open Command Prompt (Windows) or Terminal (Mac/Linux) and run:
+
+bash
+CopyEdit
+pip install opencv-python numpy
+✅ 3. Save the Code
+Open a code editor like VS Code, Notepad++, or simply use Notepad.
+
+Paste the code into a new file.
+
+Save it as:
+
+CopyEdit
+obstacle_avoidance.py
+✅ 4. Run the Code
+In your terminal or command prompt, navigate to the folder where you saved the file. For example:
+
+bash
+CopyEdit
+cd C:\Users\YourName\Documents
+Then run:
+
+bash
+CopyEdit
+python obstacle_avoidance.py
+✅ 5. Allow Camera Access
+The program will use your webcam to simulate obstacle detection. Make sure:
+
+Your camera is connected and not being used by another app.
+
+You allow Python access to your webcam (you may get a popup if you're on Windows).
+
+✅ 6. Control & Quit
+The program will open a window showing the live video feed.
+
+It will display boxes around obstacles and print the AI navigation action (like "Turn Right" or "Move Forward").
+
+Press q to quit the application and close the window.
+
