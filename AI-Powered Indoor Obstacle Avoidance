@@ -1,0 +1,61 @@
+import cv2
+import numpy as np
+
+# Initialize camera (use 0 for webcam or a video file path)
+cap = cv2.VideoCapture(0)
+
+# Function to process each frame for obstacle detection
+def detect_obstacle(frame):
+    # Convert to grayscale and blur
+    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+    blur = cv2.GaussianBlur(gray, (5, 5), 0)
+
+    # Threshold to detect obstacles (bright areas)
+    _, thresh = cv2.threshold(blur, 200, 255, cv2.THRESH_BINARY)
+
+    # Find contours
+    contours, _ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+
+    obstacle_detected = False
+    for cnt in contours:
+        area = cv2.contourArea(cnt)
+        if area > 800:  # Adjust threshold as needed
+            obstacle_detected = True
+            x, y, w, h = cv2.boundingRect(cnt)
+            cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 0, 255), 2)
+            cv2.putText(frame, 'Obstacle', (x, y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 255), 2)
+
+    return frame, obstacle_detected
+
+# Rule-based AI decision function
+def navigation_decision(obstacle):
+    if obstacle:
+        return "Turn Right"
+    else:
+        return "Move Forward"
+
+# Main loop
+while True:
+    ret, frame = cap.read()
+    if not ret:
+        break
+
+    # Resize for consistency
+    frame = cv2.resize(frame, (640, 480))
+
+    # Detect obstacle
+    processed_frame, is_obstacle = detect_obstacle(frame)
+
+    action = navigation_decision(is_obstacle)
+
+   
+    cv2.putText(processed_frame, f'Action: {action}', (10, 30),
+                cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
+
+    cv2.imshow("Obstacle Avoidance", processed_frame)
+
+    if cv2.waitKey(1) & 0xFF == ord('q'):
+        break
+
+cap.release()
+cv2.destroyAllWindows()
